@@ -15,3 +15,6 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## Useful VSCode extensions
+- SQLite Viewer
