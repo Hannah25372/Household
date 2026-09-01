@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect, useRef } from "react";
 import { LuTrash, LuUserPlus, LuX, LuCheck } from "react-icons/lu";
-import { getUsers, createUser, type CreateUserRequest, type User } from "../api/users";
+import { getUsers, createUser, type CreateUserRequest, type User, deleteUser } from "../api/users";
 import Pagination from "../components/Pagination";
 
 function UserHeader() {
@@ -76,7 +76,7 @@ function TableControls({ onAddUser }: { onAddUser: () => void }) {
   );
 }
 
-function UserTable({ users }: { users: User[] }) {
+function UserTable({ users, onDeleteUser }: { users: User[], onDeleteUser: (user_id:number) => void }) {
   return (
     <div className="table-container">
       <table className="data-table">
@@ -96,7 +96,7 @@ function UserTable({ users }: { users: User[] }) {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
-              <td><button><LuTrash/></button></td>
+              <td><button onClick={() => onDeleteUser(user.id)}><LuTrash/></button></td>
             </tr>
           ))}
         </tbody>
@@ -138,12 +138,25 @@ function Users() {
     }
   }
 
+  //delete user function
+  async function handleDeleteUser(
+    user_id: number,
+  ) {
+    try {
+      await deleteUser(user_id);
+      setUsers(users => users.filter(user => user.id !== user_id));
+      setTotal(total => total - 1);
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
   return (
     <div className="page-container">
       <UserHeader/>
       <div className="table-section">
         <TableControls onAddUser={() => setShowAddUserModal(true)}/>
-        <UserTable users={users} />
+        <UserTable users={users} onDeleteUser={handleDeleteUser}/>
         <Pagination
           page={page}
           pageSize={pageSize}
