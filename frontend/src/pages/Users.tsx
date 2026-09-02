@@ -24,6 +24,10 @@ function AddUserModal({
   const [role, setRole] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(event.target.value);
+  };
+  
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     onSubmit({
@@ -53,7 +57,16 @@ function AddUserModal({
 
         <div className="form-field">
           <label htmlFor="userRole">Role</label>
-          <input id="userRole" type="text" value={role} onChange={(event) => setRole(event.target.value)}/>
+          <div className="radio-group">
+            <label>
+              <input id="userRole" type="radio" name="role" value="user" checked={role === "user"} onChange={handleRoleChange}/>
+              User
+            </label>
+            <label>
+              <input id="adminRole" type="radio" name="role" value="admin" checked={role === "admin"} onChange={handleRoleChange}/>
+              Admin
+            </label>
+          </div>
         </div>
 
         <button type="button" onClick={onCancel}><LuX/></button>

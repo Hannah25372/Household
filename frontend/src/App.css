@@ -162,6 +162,24 @@
       outline-offset: 1px;
     }
   }
+
+  .radio-group {
+    display:flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      display: flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    input[type="radio"] {
+      width: auto;
+      padding:0
+    }
+  }
 }
 
 

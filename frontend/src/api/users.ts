@@ -1,10 +1,16 @@
 const API_URL = "http://localhost:8000/api";
 
+export const Role = {
+   user: 'user',
+   admin: 'admin'
+}
+export type Role = typeof Role[keyof typeof Role];
+
 export type User = {
   id: number;
   name: string;
   email: string;
-  role: string;
+  role: Role;
 };
 
 export type CreateUserRequest = {
