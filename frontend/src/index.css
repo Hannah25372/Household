@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 :root {
   --sage-dark: #3f6145;
+  --sage-hover: #78a780;
   --sage-medium: #c9dfc9;
   --sage-light: #dcebdc;
   --sage-pale: #eaf3ea;
@@ -9,9 +12,11 @@
   --border: #c5d5c5;
   --text: #2f3e32;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Montserrat', sans-serif;
+  --heading: 'Montserrat', sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+
+  --page-width: 1126px;
 
   letter-spacing: 0.18px;
 }
@@ -22,17 +27,16 @@
 
 body {
   margin: 0;
-  /* color: var(--text); */
   background-color: var(--sage-faint);
-  font-family: Arial, sans-serif;
+  font-family: var(--sans);
+}
+
+h1,h2,h3 {
+  font-family: var(--heading);
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  /* border-inline: 1px solid var(--border); */
+  width: 100%;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
