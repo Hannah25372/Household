@@ -95,10 +95,10 @@ function UserTable({ users, onDeleteUser }: { users: User[], onDeleteUser: (user
       <table className="data-table">
         <thead>
           <tr>
-            <th>User ID</th>
-            <th>User Name</th>
-            <th>User Email</th>
-            <th>User Role</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
             <th>Actions</th>
           </tr>
         </thead>
