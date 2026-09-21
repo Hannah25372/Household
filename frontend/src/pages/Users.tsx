@@ -47,19 +47,19 @@ function AddUserModal({
       <form onSubmit={handleSubmit}>
         <div className="form-field">
           <label htmlFor="userName">Name</label>
-          <input id="userName" type="text" value={name} onChange={(event) => setName(event.target.value)}/>
+          <input id="userName" type="text" value={name} onChange={(event) => setName(event.target.value) } required/>
         </div>
 
         <div className="form-field">
           <label htmlFor="userEmail">Email</label>
-          <input id="userEmail" type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+          <input id="userEmail" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required/>
         </div>
 
         <div className="form-field">
           <label htmlFor="userRole">Role</label>
           <div className="radio-group">
             <label>
-              <input id="userRole" type="radio" name="role" value="user" checked={role === "user"} onChange={handleRoleChange}/>
+              <input id="userRole" type="radio" name="role" value="user" checked={role === "user"} onChange={handleRoleChange} required/>
               User
             </label>
             <label>
