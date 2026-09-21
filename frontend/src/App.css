@@ -185,6 +185,7 @@
 
 /* Pages */
 .page-container {
+  padding: 0 20px;
   color: var(--sage-dark);
 
   button {
@@ -196,9 +197,21 @@
     font-size: 14px;
 
     &:hover {
-      background-color: var(--sage-light);
+      color: var(--sage-medium);
     }
   }
 }
 
 
+/* Breakdown page */
+
+.months {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  button {
+    font-size: 20px;
+  }
+}
