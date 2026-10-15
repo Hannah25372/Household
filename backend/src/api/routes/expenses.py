@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
@@ -10,7 +10,7 @@ from api.pagination import PaginationParams, PaginatedResponse
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
 
-#TODO: add filters for bill, date range, one off
+#TODO: add filters for bill, date range
 @router.get("/", response_model=PaginatedResponse[ExpenseModel])
 def list_expenses(
     pagination: PaginationParams = Depends(),
@@ -50,7 +50,7 @@ def list_overrides(
     }
 
 @router.get("/current", response_model=list[ExpenseModel])
-def get_current_expenses(
+def list_current_expenses(
     db: Session = Depends(get_db),
 ):
     stmt = (
@@ -63,5 +63,47 @@ def get_current_expenses(
         for expense in expenses
         ]
 
+@router.post("/", response_model=ExpenseModel)
+def create_expense(
+        expense_data: ExpenseModel,
+        db: Session = Depends(get_db),
+    ):
+    expense = Expense(
+            name=expense_data.name,
+            amount=expense_data.amount,
+            start_date=expense_data.start_date,
+            end_date=expense_data.end_date
+    )
+    db.add(expense)
+    db.commit()
+    db.refresh(expense)
+    return expense
 
-# TODO: Routes: add ongoing / modify ongoing / add override / modify override
+@router.post("/{id}", response_model=ExpenseModel)
+def update_expense(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    return
+
+@router.post("/override", response_model=ExpenseOverrideModel)
+def create_override(
+    override_data: ExpenseOverrideModel,
+    db: Session = Depends(get_db),
+):
+    override = ExpenseOverride(
+        name=override_data.name,
+        amount=override_data.amount,
+        override_date=override_data.override_date,
+    )
+    db.add(override)
+    db.commit()
+    db.refresh(override)
+    return override
+
+@router.post("/override/{id}", response_model=ExpenseOverrideModel)
+def update_override(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    return
