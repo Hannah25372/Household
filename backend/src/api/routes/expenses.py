@@ -82,9 +82,18 @@ def create_expense(
 @router.post("/{id}", response_model=ExpenseModel)
 def update_expense(
     id: int,
+    expense_data: ExpenseModel,
     db: Session = Depends(get_db),
 ):
-    return
+    expense = db.get(Expense, id)
+    if expense is None:
+        raise HTTPException(status_code=404,detail="Expense not found")
+    expense.amount = expense_data.amount
+    expense.start_date = expense_data.start_date
+    expense.end_date = expense_data.end_date
+    db.commit()
+    db.refresh(expense)
+    return expense
 
 @router.post("/override", response_model=ExpenseOverrideModel)
 def create_override(
@@ -104,6 +113,13 @@ def create_override(
 @router.post("/override/{id}", response_model=ExpenseOverrideModel)
 def update_override(
     id: int,
+    override_data: ExpenseOverrideModel,
     db: Session = Depends(get_db),
 ):
-    return
+    override = db.get(ExpenseOverride, id)
+    if override is None:
+        raise HTTPException(status_code=404,detail="Override not found")
+    override.amount = override_data.amount
+    db.commit()
+    db.refresh(override)
+    return override
