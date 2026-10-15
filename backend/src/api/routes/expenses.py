@@ -95,6 +95,18 @@ def update_expense(
     db.refresh(expense)
     return expense
 
+@router.delete("/{id}")
+def delete_expense(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    expense = db.get(Expense, id)
+    if expense is None:
+        raise HTTPException(status_code=404,detail="Expense not found")
+    db.delete(expense)
+    db.commit()
+    return {"message": "Expense deleted"}
+
 @router.post("/override", response_model=ExpenseOverrideModel)
 def create_override(
     override_data: ExpenseOverrideModel,
@@ -123,3 +135,15 @@ def update_override(
     db.commit()
     db.refresh(override)
     return override
+
+@router.delete("/{id}")
+def delete_expense(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    override = db.get(ExpenseOverride, id)
+    if override is None:
+        raise HTTPException(status_code=404,detail="Override not found")
+    db.delete(override)
+    db.commit()
+    return {"message": "Override deleted"}
