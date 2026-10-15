@@ -1,5 +1,5 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import UniqueConstraint, Index, CheckConstraint, or_
 from database.enums import Role, Bill
 from datetime import date
 
@@ -33,9 +33,23 @@ class Expense(Base):
     start_date: Mapped[date] = mapped_column()
     end_date: Mapped[date | None] = mapped_column()
 
-    # Constraints:
-    # - Can only have one of each Bill with end_date None
-    # - Cannot have overlapping dates in the same Bill
+    __table_args__ = (
+        CheckConstraint(
+            or_(
+                end_date.is_(None),
+                end_date >= start_date
+            ),
+            name="ck_valid_date_range",
+        ),
+        Index(
+        "uq_bill_name_open_ended",
+        "name",
+        unique=True,
+        sqlite_where=end_date.is_(None),
+    ),
+    )
+
+    # Constraint: cannot have overlapping dates in the same Bill
 
 class ExpenseOverride(Base):
     __tablename__ = "expense_override"
@@ -45,8 +59,9 @@ class ExpenseOverride(Base):
     amount: Mapped[float] = mapped_column()
     override_date: Mapped[date] = mapped_column()
 
-    # Constraints:
-        # - Cannot have multiple Bill with same override_date
+    __table_args__ = (
+        UniqueConstraint("override_date", "name", name="uq_override_date_name"),
+    )
 
 
 
