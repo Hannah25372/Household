@@ -7,8 +7,8 @@ class ExpenseModel(BaseModel):
     amount: float
     start_date: date
     end_date: date | None
-    one_off: bool
 
-class CurrentOngoingExpense(BaseModel):
+class ExpenseOverrideModel(BaseModel):
     name: Bill
     amount: float
+    override_date: date

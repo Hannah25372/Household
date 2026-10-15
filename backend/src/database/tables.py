@@ -22,7 +22,6 @@ class Split(Base):
     users: Mapped[str] = mapped_column()
     start_date: Mapped[date] = mapped_column()
     end_date: Mapped[date | None] = mapped_column()
-    one_off: Mapped[bool] = mapped_column(default=False)
 
 
 class Expense(Base):
@@ -33,13 +32,21 @@ class Expense(Base):
     amount: Mapped[float] = mapped_column()
     start_date: Mapped[date] = mapped_column()
     end_date: Mapped[date | None] = mapped_column()
-    one_off: Mapped[bool] = mapped_column(default=False)
 
     # Constraints:
-    # - Can only have one of each Bill with end_date None and one_off False
-    # - Cannot have overlapping dates in the same Bill with one_off False
-    # - Cannot have one_off True and end_date not None
-    # - Cannot have one_off True and multiple BIll with same start_date
+    # - Can only have one of each Bill with end_date None
+    # - Cannot have overlapping dates in the same Bill
+
+class ExpenseOverride(Base):
+    __tablename__ = "expense_override"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[Bill] = mapped_column()
+    amount: Mapped[float] = mapped_column()
+    override_date: Mapped[date] = mapped_column()
+
+    # Constraints:
+        # - Cannot have multiple Bill with same override_date
 
 
 
