@@ -136,8 +136,8 @@ def update_override(
     db.refresh(override)
     return override
 
-@router.delete("/{id}")
-def delete_expense(
+@router.delete("/override/{id}")
+def delete_override(
     id: int,
     db: Session = Depends(get_db),
 ):
