@@ -16,7 +16,7 @@ def list_expenses(
     filters: ExpenseFilters = Depends(),
     db: Session = Depends(get_db),
 ):
-    query = db.select(Expense)
+    query = select(Expense)
     query = filters.apply(query)
     count_query = select(func.count()).select_from(
         query.order_by(None).subquery()
