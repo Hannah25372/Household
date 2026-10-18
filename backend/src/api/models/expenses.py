@@ -52,3 +52,10 @@ class ExpenseOverrideFilters(BaseModel):
         if self.end_date is not None:
             query = query.where(ExpenseOverride.override_date <= self.end_date)
         return query
+
+
+class ExpenseOrganised(BaseModel):
+    name: Bill
+    amount: float
+    date: date
+    override: bool

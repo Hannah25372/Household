@@ -71,6 +71,7 @@ def create_expense(
         expense_data: ExpenseModel,
         db: Session = Depends(get_db),
     ):
+    # DB constraints handle rejecting expenses that already exist (overlapping dates)
     expense = Expense(
             name=expense_data.name,
             amount=expense_data.amount,
@@ -150,3 +151,19 @@ def delete_override(
     db.delete(override)
     db.commit()
     return {"message": "Override deleted"}
+
+
+@router.get("/organised", response_model=PaginatedResponse[ExpenseModel])
+def list_organised_expenses(
+    pagination: PaginationParams = Depends(),
+    db: Session = Depends(get_db),
+):
+    # Can provide bill, start date, end date
+    # Get all expenses for that bill + date range
+    # Get all overrides for that bill + date range
+    # Compile them into a collection and apply overrides
+    # Return a list of values ready to display in a table
+    # If no bill, does all of them
+    # If no start date, goes from start of recorded history
+    # If no end date, goes to end of latest date of each bill, and either match any with None to the latest date recorded, or present date.
+    return
