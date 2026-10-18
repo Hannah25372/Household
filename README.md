@@ -9,7 +9,7 @@ You will need to have installed:
 ```
 cd backend
 uv sync
-uv run uvicorn api.main:app --reload
+uv run uvicorn api.main:app --app-dir src --reload
 
 cd frontend
 npm install
