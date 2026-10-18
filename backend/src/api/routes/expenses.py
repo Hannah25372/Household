@@ -1,28 +1,31 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 from database.database import get_db
 from database.tables import Expense, ExpenseOverride
-from api.models.expenses import ExpenseModel, ExpenseOverrideModel
+from api.models.expenses import ExpenseModel, ExpenseOverrideModel, ExpenseFilters, ExpenseOverrideFilters
 from api.pagination import PaginationParams, PaginatedResponse
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
 
-#TODO: add filters for bill, date range
 @router.get("/", response_model=PaginatedResponse[ExpenseModel])
 def list_expenses(
     pagination: PaginationParams = Depends(),
+    filters: ExpenseFilters = Depends(),
     db: Session = Depends(get_db),
 ):
-    total = db.query(Expense).count()
-    expenses = (
-        db.query(Expense)
-        .offset(pagination.offset)
-        .limit(pagination.page_size)
-        .all()
+    query = db.select(Expense)
+    query = filters.apply(query)
+    count_query = select(func.count()).select_from(
+        query.order_by(None).subquery()
     )
+    total = db.scalar(count_query)
+    query = query.order_by(Expense.start_date.desc())
+    query = query.offset(pagination.offset).limit(pagination.page_size)
+    expenses = db.scalars(query).all()
+
     return {
         "items": expenses,
         "page": pagination.page,
