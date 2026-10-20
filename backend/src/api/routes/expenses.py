@@ -76,7 +76,8 @@ def create_expense(
             name=expense_data.name,
             amount=expense_data.amount,
             start_date=expense_data.start_date,
-            end_date=expense_data.end_date
+            end_date=expense_data.end_date,
+            overrides=[]
     )
     db.add(expense)
     db.commit()
@@ -89,6 +90,7 @@ def update_expense(
     expense_data: ExpenseModel,
     db: Session = Depends(get_db),
 ):
+    # This should also check and delete any overrides that do not fall in the time, and cannot be made to overlap other expenses.
     expense = db.get(Expense, id)
     if expense is None:
         raise HTTPException(status_code=404,detail="Expense not found")
@@ -107,7 +109,7 @@ def delete_expense(
     expense = db.get(Expense, id)
     if expense is None:
         raise HTTPException(status_code=404,detail="Expense not found")
-    db.delete(expense)
+    db.delete(expense) # Does it delete overrides cascade?
     db.commit()
     return {"message": "Expense deleted"}
 
@@ -116,10 +118,12 @@ def create_override(
     override_data: ExpenseOverrideModel,
     db: Session = Depends(get_db),
 ):
+    # Make sure the dates accept this.
     override = ExpenseOverride(
         name=override_data.name,
         amount=override_data.amount,
         override_date=override_data.override_date,
+        expense_id=override_data.expense_id
     )
     db.add(override)
     db.commit()
@@ -151,19 +155,3 @@ def delete_override(
     db.delete(override)
     db.commit()
     return {"message": "Override deleted"}
-
-
-@router.get("/organised", response_model=PaginatedResponse[ExpenseModel])
-def list_organised_expenses(
-    pagination: PaginationParams = Depends(),
-    db: Session = Depends(get_db),
-):
-    # Can provide bill, start date, end date
-    # Get all expenses for that bill + date range
-    # Get all overrides for that bill + date range
-    # Compile them into a collection and apply overrides
-    # Return a list of values ready to display in a table
-    # If no bill, does all of them
-    # If no start date, goes from start of recorded history
-    # If no end date, goes to end of latest date of each bill, and either match any with None to the latest date recorded, or present date.
-    return
