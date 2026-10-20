@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from database.enums import Role
+from household_service.database.enums import Role
 
 
 class UserCreate(BaseModel):

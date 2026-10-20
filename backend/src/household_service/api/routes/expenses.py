@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import select, func
 
-from database.database import get_db
-from database.tables import Expense, ExpenseOverride
-from api.models.expenses import ExpenseModel, ExpenseOverrideModel, ExpenseFilters, ExpenseOverrideFilters
-from api.pagination import PaginationParams, PaginatedResponse
+from household_service.database.database import get_db
+from household_service.database.tables import Expense, ExpenseOverride
+from household_service.api.models.expenses import ExpenseModel, ExpenseOverrideModel, ExpenseFilters, ExpenseOverrideFilters
+from household_service.api.pagination import PaginationParams, PaginatedResponse
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from database.database import get_db
-from database.tables import User
-from api.models.users import UserCreate, UserResponse
-from api.pagination import PaginationParams, PaginatedResponse
+from household_service.database.database import get_db
+from household_service.database.tables import User
+from household_service.api.models.users import UserCreate, UserResponse
+from household_service.api.pagination import PaginationParams, PaginatedResponse
 
 router = APIRouter(prefix="/users", tags=["Users"])
 

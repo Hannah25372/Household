@@ -9,7 +9,7 @@ You will need to have installed:
 ```
 cd backend
 uv sync
-uv run uvicorn api.main:app --app-dir src --reload
+uv run uvicorn household_service.api.main:app --reload
 
 cd frontend
 npm install

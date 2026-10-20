@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from database.enums import Bill
-from database.tables import Expense, ExpenseOverride
+from household_service.database.enums import Bill
+from household_service.database.tables import Expense, ExpenseOverride
 from datetime import date
 from sqlalchemy import or_
 

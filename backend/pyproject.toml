@@ -1,5 +1,5 @@
 [project]
-name = "backend"
+name = "household-backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -56,11 +56,17 @@ dependencies = [
 ]
 
 [project.scripts]
-backend = "backend:main"
+backend = "household_service.api.main:main"
 
 [build-system]
 requires = ["uv_build>=0.12.7,<0.13.0"]
 build-backend = "uv_build"
 
-[tool.uv]
-package = false
+[tool.uv.build-backend]
+module-name = "household_service"
+module-root = "src"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

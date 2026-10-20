@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import UniqueConstraint, Index, CheckConstraint, or_, ForeignKey
-from database.enums import Role, Bill
+from household_service.database.enums import Role, Bill
 from datetime import date
 
-from .database import Base
+from household_service.database.database import Base
 
 class User(Base):
     __tablename__ = "user"
